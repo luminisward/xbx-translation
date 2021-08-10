@@ -3,7 +3,9 @@ import { Select, Radio, Form, Input, Button, message } from 'antd'
 import { useRouter } from 'next/router'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import request, { setToken } from '../utils/request'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { getToken } from '../utils/request'
+import jwt_decode from 'jwt-decode'
 
 const { Option } = Select
 
@@ -71,6 +73,18 @@ const RegisterForm = (props) => {
 }
 
 export default function Home() {
+  const router = useRouter()
+  useEffect(() => {
+    const jwt = getToken()
+    if (jwt) {
+      const { username } = jwt_decode(jwt)
+      if (username) {
+        router.push('/editor')
+        return
+      }
+    }
+  }, [])
+
   const [formType, setFormType] = useState('login')
   return (
     <div>
