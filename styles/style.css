@@ -9,11 +9,6 @@
   border-radius: 2px;
 }
 
-[data-theme='dark'] .editable-row:hover .editable-cell-value-wrap {
-  border: 1px solid #434343;
-}
-
 .ant-table-cell {
-  /* word-break: break-all; */
   overflow-wrap: anywhere;
 }

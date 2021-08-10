@@ -4,10 +4,10 @@ import { message } from 'antd'
 const tokenKey = 'token'
 
 export const getToken = () => {
-  return localStorage.getItem(tokenKey)
+  return window.localStorage.getItem(tokenKey)
 }
 export const setToken = (token) => {
-  localStorage.setItem(tokenKey, token)
+  window.localStorage.setItem(tokenKey, token)
 }
 
 const instance = axios.create({
@@ -33,9 +33,9 @@ instance.interceptors.response.use(
   },
   (error) => {
     // console.log('interceptor', error)
-    if (error.message) {
-      message.error(error.message)
-    }
+    // if (error.message) {
+    //   message.error(error.message)
+    // }
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     return Promise.reject(error.response?.data?.message ? new Error(error.response?.data?.message) : error)
