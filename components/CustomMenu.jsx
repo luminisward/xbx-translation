@@ -42,6 +42,7 @@ export default function CustomMenu({ children, ...props }) {
       <Menu
         theme="dark"
         mode="horizontal"
+        inlineCollapsed={false}
         style={{
           marginRight: '3em',
         }}
@@ -53,17 +54,12 @@ export default function CustomMenu({ children, ...props }) {
           </Menu.Item>
         ))}
       </Menu>
+
       {children}
-      <Menu
-        style={{
-          marginLeft: '3em',
-        }}
-        theme="dark"
-      >
-        <div style={{ cursor: 'pointer' }} onClick={confirm}>
-          {username}
-        </div>
-      </Menu>
+
+      <div style={{ cursor: 'pointer', color: 'white', marginLeft: '3em' }} onClick={confirm}>
+        {username}
+      </div>
     </>
   )
 }

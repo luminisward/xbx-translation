@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import { Button, Table, Tag, Space, Select, Layout } from 'antd'
+import { Button, Input, Tag, Modal, Select, Layout } from 'antd'
 import { ReloadOutlined, SearchOutlined } from '@ant-design/icons'
 import useSWR from 'swr'
 import { useEffect, useState } from 'react'
@@ -11,6 +11,7 @@ import { useRouter } from 'next/router'
 import authCheck from '../utils/authCheck'
 
 const { Option } = Select
+const { TextArea } = Input
 
 export default function Editor() {
   const router = useRouter()
@@ -111,6 +112,24 @@ export default function Editor() {
     }
   })
 
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [batchEditText, setBatchEditText] = useState('')
+  const textRowsCount = batchEditText.split('\n').length
+
+  const showModal = () => {
+    setBatchEditText(dataSource.map((row) => row.cn).join('\n'))
+    setIsModalVisible(true)
+  }
+
+  const handleOk = () => {
+    alert(batchEditText)
+    setIsModalVisible(false)
+  }
+
+  const handleCancel = () => {
+    setIsModalVisible(false)
+  }
+
   return (
     <div>
       <Head>
@@ -151,6 +170,9 @@ export default function Editor() {
                     })
                   : null}
               </Select>
+              <Button type="primary" onClick={showModal} disabled={!currentTableName}>
+                批量编辑
+              </Button>
               <Button
                 style={{
                   marginLeft: '1em',
@@ -176,6 +198,26 @@ export default function Editor() {
             />
           </Layout.Content>
         </Layout>
+        <Modal
+          title="批量编辑"
+          visible={isModalVisible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          okButtonProps={{ disabled: textRowsCount !== dataSource.length }}
+        >
+          <TextArea
+            value={batchEditText}
+            onChange={(e) => {
+              setBatchEditText(e.target.value)
+            }}
+            autoSize={{ minRows: 4, maxRows: 15 }}
+            showCount={{
+              formatter: ({ count, maxLength }) => {
+                return `当前行数: ${textRowsCount}\t原表行数: ${dataSource.length}`
+              },
+            }}
+          />
+        </Modal>
       </main>
     </div>
   )
