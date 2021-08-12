@@ -121,8 +121,12 @@ export default function Editor() {
     setIsModalVisible(true)
   }
 
-  const handleOk = () => {
-    alert(batchEditText)
+  const handleOk = async () => {
+    await request.put(`/translation`, {
+      table: currentTableName,
+      text: batchEditText,
+    })
+    await reloadTranslation()
     setIsModalVisible(false)
   }
 
@@ -204,13 +208,14 @@ export default function Editor() {
           onOk={handleOk}
           onCancel={handleCancel}
           okButtonProps={{ disabled: textRowsCount !== dataSource.length }}
+          width={'70%'}
         >
           <TextArea
             value={batchEditText}
             onChange={(e) => {
               setBatchEditText(e.target.value)
             }}
-            autoSize={{ minRows: 4, maxRows: 15 }}
+            autoSize={{ minRows: 4, maxRows: 20 }}
             showCount={{
               formatter: ({ count, maxLength }) => {
                 return `当前行数: ${textRowsCount}\t原表行数: ${dataSource.length}`
