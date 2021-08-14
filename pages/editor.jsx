@@ -29,9 +29,6 @@ export default function Editor() {
   const { data: tableRowsYx } = useSWR(currentTableName ? `/bdat/${currentTableName}?language=yx` : null, request.get, {
     revalidateOnFocus: false,
   })
-  const { data: tableRowsCn } = useSWR(currentTableName ? `/bdat/${currentTableName}?language=cn` : null, request.get, {
-    revalidateOnFocus: false,
-  })
 
   const { data: translation, mutate } = useSWR(
     currentTableName ? `/translation/${currentTableName}` : null,
@@ -55,10 +52,9 @@ export default function Editor() {
   }, [currentTableName, translation])
 
   const dataSource = []
-  if (tableRowsJp && tableRowsYx && tableRowsCn && translation) {
+  if (tableRowsJp && tableRowsYx && translation) {
     for (const { row_id, name } of tableRowsJp) {
       const yxText = tableRowsYx.find((row) => row_id === row.row_id)
-      const cnText = tableRowsCn.find((row) => row_id === row.row_id)
 
       const translationRow = translation.find((translationRow) => translationRow.row_id === row_id)
       const localTranslationRow = localTranslation[row_id]
@@ -67,7 +63,7 @@ export default function Editor() {
         id: row_id,
         jp: name,
         yx: yxText ? yxText.name : '',
-        cn: localTranslationRow?.text || translationRow?.text || cnText.name,
+        cn: localTranslationRow?.text || translationRow?.text,
       })
     }
   }
