@@ -73,7 +73,7 @@ export default function Editor() {
     {
       title: 'id',
       dataIndex: 'id',
-      width: '4%',
+      width: '50px',
     },
     {
       title: '日文',
@@ -157,7 +157,6 @@ export default function Editor() {
                 showSearch
                 style={{
                   flex: 1,
-                  marginLeft: '1em',
                 }}
               >
                 {tables

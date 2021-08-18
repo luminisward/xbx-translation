@@ -23,8 +23,7 @@ export default function Editor() {
   const { data: changes, mutate } = useSWR(`/changes/${currentTable}`, request.get)
   const changesDataSource =
     changes?.map((row) => {
-      row.time = new Date(row.time).toLocaleString()
-      return row
+      return { ...row, time: new Date(row.time).toLocaleString() }
     }) || []
 
   const reloadTranslation = () => mutate()
@@ -33,22 +32,27 @@ export default function Editor() {
     {
       title: '时间',
       dataIndex: 'time',
-      width: '20%',
+      width: '180px',
+    },
+    {
+      title: 'table',
+      dataIndex: 'table',
+      width: '300px',
     },
     {
       title: 'id',
       dataIndex: 'row_id',
-      width: '10%',
+      width: '50px',
     },
     {
       title: '文本',
       dataIndex: 'text',
-      width: '50%',
+      // width: '50%',
     },
     {
       title: '用户',
       dataIndex: ['user', 'username'],
-      width: '20%',
+      width: '100px',
     },
   ]
 

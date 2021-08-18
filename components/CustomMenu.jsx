@@ -13,6 +13,7 @@ export default function CustomMenu({ children, ...props }) {
   const routes = [
     { path: '/editor', label: '编辑' },
     { path: '/changes', label: '修改历史' },
+    { path: '/xlsx', label: 'Excel' },
   ]
 
   const [username, setUsername] = useState('')
@@ -54,8 +55,7 @@ export default function CustomMenu({ children, ...props }) {
           </Menu.Item>
         ))}
       </Menu>
-
-      {children}
+      <div style={{ flex: 1, display: 'flex' }}>{children}</div>
 
       <div style={{ cursor: 'pointer', color: 'white', marginLeft: '3em' }} onClick={confirm}>
         {username}
