@@ -63,7 +63,7 @@ export default function Editor() {
             <CustomMenu></CustomMenu>
           </Layout.Header>
 
-          <Layout.Content style={{ overflow: 'auto' }}>
+          <Layout.Content style={{ overflow: 'auto', margin: '10px 50px' }}>
             <h2>导入</h2>
             <p>
               <Upload {...props}>
@@ -107,7 +107,7 @@ export default function Editor() {
                 <Button
                   type="primary"
                   href={`${process.env.NEXT_PUBLIC_API_BASE}/excel/${currentTableName}`}
-                  disabled={fileList.length === 0}
+                  disabled={!currentTableName}
                   style={{ marginTop: 16 }}
                 >
                   导出
