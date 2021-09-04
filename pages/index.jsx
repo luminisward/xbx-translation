@@ -7,10 +7,6 @@ import { useState, useEffect } from 'react'
 import { getToken } from '../utils/request'
 import jwt_decode from 'jwt-decode'
 
-const { Option } = Select
-
-const fetcher = (url) => fetch(url).then((res) => res.json())
-
 const LoginForm = (props) => {
   const router = useRouter()
   const onFinish = async (values) => {

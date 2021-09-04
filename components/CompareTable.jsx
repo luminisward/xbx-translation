@@ -1,7 +1,5 @@
-import useSWR from 'swr'
 import { useState, createContext, useContext, useEffect, useRef } from 'react'
-import { Table, Tag, Space, Select, Form, Input, message } from 'antd'
-import request from '../utils/request'
+import { Table, Form, Input, message } from 'antd'
 
 const EditableContext = createContext(null)
 

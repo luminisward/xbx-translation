@@ -1,11 +1,9 @@
-import { Layout, Menu, Modal } from 'antd'
+import { Menu, Modal } from 'antd'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { getToken } from '../utils/request'
 import jwt_decode from 'jwt-decode'
 import { useEffect, useState } from 'react'
-
-const { SubMenu } = Menu
 
 export default function CustomMenu({ children, ...props }) {
   const router = useRouter()

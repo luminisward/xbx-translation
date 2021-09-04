@@ -1,14 +1,11 @@
-import Head from 'next/head'
-import { Button, Table, Tag, Space, Select, Layout, List, Upload, message } from 'antd'
-import { ReloadOutlined, SearchOutlined, UploadOutlined } from '@ant-design/icons'
+import { Button, Select, Upload, message } from 'antd'
+import { UploadOutlined } from '@ant-design/icons'
 import useSWR from 'swr'
 import { useEffect, useState } from 'react'
-import CompareTable from '../components/CompareTable'
 import request from '../utils/request'
-import CustomMenu from '../components/CustomMenu'
-import BdatCascader from '../components/BdatCascader'
 import { useRouter } from 'next/router'
 import authCheck from '../utils/authCheck'
+import AppLayout from '../components/AppLayout'
 
 const { Option } = Select
 
@@ -40,83 +37,57 @@ export default function Editor() {
   }
 
   return (
-    <div>
-      <Head>
-        <title>XBX汉化协作平台</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main>
-        <Layout
+    <AppLayout style={{ overflow: 'auto', margin: '10px 50px' }}>
+      <h2>导入</h2>
+      <p>
+        <Upload {...props}>
+          <Button icon={<UploadOutlined />}>Select File</Button>
+        </Upload>
+        <Button
+          onClick={async () => {
+            const formData = new FormData()
+            fileList.forEach((file) => {
+              formData.append('file', file)
+            })
+            const result = await request.post('/excel', formData)
+            message.info(result)
+          }}
+          type="primary"
+          style={{ marginTop: 16 }}
+        >
+          导入
+        </Button>
+      </p>
+      <h2>导出</h2>
+      <p>
+        <Select
+          onChange={setCurrentTableName}
+          showSearch
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100vh',
+            width: 300,
           }}
         >
-          <Layout.Header
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
+          {tablePrefixsSet
+            ? tablePrefixsSet.map((tablename, index) => {
+                return (
+                  <Option key={index} value={tablename}>
+                    {tablename}
+                  </Option>
+                )
+              })
+            : null}
+        </Select>
+        <div>
+          <Button
+            type="primary"
+            href={`${process.env.NEXT_PUBLIC_API_BASE}/excel/${currentTableName}`}
+            disabled={!currentTableName}
+            style={{ marginTop: 16 }}
           >
-            <CustomMenu></CustomMenu>
-          </Layout.Header>
-
-          <Layout.Content style={{ overflow: 'auto', margin: '10px 50px' }}>
-            <h2>导入</h2>
-            <p>
-              <Upload {...props}>
-                <Button icon={<UploadOutlined />}>Select File</Button>
-              </Upload>
-              <Button
-                onClick={async () => {
-                  const formData = new FormData()
-                  fileList.forEach((file) => {
-                    formData.append('file', file)
-                  })
-                  const result = await request.post('/excel', formData)
-                  message.info(result)
-                }}
-                type="primary"
-                style={{ marginTop: 16 }}
-              >
-                导入
-              </Button>
-            </p>
-            <h2>导出</h2>
-            <p>
-              <Select
-                onChange={setCurrentTableName}
-                showSearch
-                style={{
-                  width: 300,
-                }}
-              >
-                {tablePrefixsSet
-                  ? tablePrefixsSet.map((tablename, index) => {
-                      return (
-                        <Option key={index} value={tablename}>
-                          {tablename}
-                        </Option>
-                      )
-                    })
-                  : null}
-              </Select>
-              <div>
-                <Button
-                  type="primary"
-                  href={`${process.env.NEXT_PUBLIC_API_BASE}/excel/${currentTableName}`}
-                  disabled={!currentTableName}
-                  style={{ marginTop: 16 }}
-                >
-                  导出
-                </Button>
-              </div>
-            </p>
-          </Layout.Content>
-        </Layout>
-      </main>
-    </div>
+            导出
+          </Button>
+        </div>
+      </p>
+    </AppLayout>
   )
 }
