@@ -11,11 +11,6 @@ import AppLayout from '../components/AppLayout'
 const { Option } = Select
 
 export default function Editor() {
-  const router = useRouter()
-  useEffect(() => {
-    authCheck(router)
-  }, [])
-
   const [currentTable, setCurrentTable] = useState('')
 
   const { data: changes, mutate } = useSWR(`/changes/${currentTable}`, request.get)

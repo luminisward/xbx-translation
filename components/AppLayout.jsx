@@ -1,8 +1,16 @@
 import Head from 'next/head'
 import CustomMenu from './CustomMenu'
 import { Layout } from 'antd'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import authCheck from '../utils/authCheck'
 
 export default function AppLayout({ navbar, children, ...rest }) {
+  const router = useRouter()
+  useEffect(() => {
+    authCheck(router)
+  }, [])
+
   return (
     <div>
       <Head>

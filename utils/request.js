@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { message } from 'antd'
+import Cookies from 'js-cookie'
+import jwt_decode from 'jwt-decode'
 
 const tokenKey = 'token'
 
@@ -8,10 +10,11 @@ export const getToken = () => {
 }
 export const setToken = (token) => {
   window.localStorage.setItem(tokenKey, token)
+  const jwt = jwt_decode(token)
+  Cookies.set('isLogin', '1', { expires: 180 })
 }
 
 const instance = axios.create({
-  timeout: 5000,
   baseURL: process.env.NEXT_PUBLIC_API_BASE,
 })
 

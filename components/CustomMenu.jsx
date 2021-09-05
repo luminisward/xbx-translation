@@ -12,6 +12,7 @@ export default function CustomMenu({ children, ...props }) {
     { path: '/editor', label: '编辑' },
     { path: '/changes', label: '修改历史' },
     { path: '/xlsx', label: 'Excel' },
+    { path: '/search', label: '文本搜索' },
   ]
 
   const [username, setUsername] = useState('')

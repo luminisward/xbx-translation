@@ -12,11 +12,6 @@ const { Option } = Select
 const { TextArea } = Input
 
 export default function Editor() {
-  const router = useRouter()
-  useEffect(() => {
-    authCheck(router)
-  }, [])
-
   const [currentTableName, setCurrentTableName] = useState(null)
 
   const { data: tables } = useSWR('/bdat/all', request.get, { revalidateOnFocus: false })

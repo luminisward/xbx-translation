@@ -10,11 +10,6 @@ import AppLayout from '../components/AppLayout'
 const { Option } = Select
 
 export default function Editor() {
-  const router = useRouter()
-  useEffect(() => {
-    authCheck(router)
-  }, [])
-
   const { data: tables } = useSWR('/bdat/all', request.get, { revalidateOnFocus: false })
   const tablePrefixs = tables?.map((table) => table.split('.')[0]) || []
   const tablePrefixsSet = Array.from(new Set(tablePrefixs))
