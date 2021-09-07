@@ -10,12 +10,12 @@ import AppLayout from '../components/AppLayout'
 
 const { Option } = Select
 
-export default function Editor() {
+export default function Search() {
   const columns = [
     {
       title: 'table',
       dataIndex: 'table',
-      width: '300px',
+      width: '270px',
     },
     {
       title: 'id',
@@ -32,11 +32,11 @@ export default function Editor() {
   const [searchCondition, setSearchCondition] = useState({ searchText: '', language: 'cn' })
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 10,
+    pageSize: 20,
     total: 0,
   })
 
-  const { data } = useSWR(
+  const { data: searchResult } = useSWR(
     searchCondition.searchText
       ? [searchCondition.searchText, searchCondition.language, pagination.current, pagination.pageSize]
       : null,
@@ -47,12 +47,11 @@ export default function Editor() {
   const [total, setTotal] = useState(0)
   const [items, setItems] = useState([])
   useEffect(() => {
-    console.log(data)
-    if (data) {
-      setTotal(data.meta.totalItems)
-      setItems(data.items)
+    if (searchResult) {
+      setTotal(searchResult.meta.totalItems)
+      setItems(searchResult.items)
     }
-  }, [data])
+  }, [searchResult])
 
   const [language, setLanguage] = useState('cn')
   const handleSearchTextChange = async (text) => {
@@ -68,12 +67,12 @@ export default function Editor() {
       navbar={
         <>
           <Input.Group compact style={{ display: 'flex' }}>
-            <Select size="large" value={language} onChange={setLanguage}>
+            <Select value={language} onChange={setLanguage}>
               <Option value="jp">日版</Option>
               <Option value="yx">游侠</Option>
-              <Option value="cn">汉化</Option>
+              <Option value="cn">翻译</Option>
             </Select>
-            <Input.Search placeholder="input search text" size="large" enterButton onSearch={handleSearchTextChange} />
+            <Input.Search enterButton onSearch={handleSearchTextChange} />
           </Input.Group>
         </>
       }
@@ -81,17 +80,16 @@ export default function Editor() {
       <Table
         dataSource={items}
         columns={columns}
-        scroll={{ y: 'calc(100vh - 158px)' }}
-        className="h-full  overflow-auto"
+        scroll={{ y: 'calc(100vh - 160px)' }}
         rowKey={(record) => `${record.table}:${record.row_id}`}
         bordered
         size="small"
-        loading={searchCondition.searchText && !data}
+        loading={searchCondition.searchText && !searchResult}
         pagination={{
           ...pagination,
           total,
           showSizeChanger: true,
-          pageSizeOptions: [10, 100, 1000, 5000],
+          pageSizeOptions: [20, 100, 1000],
           showTotal: (total) => `Total ${total}`,
         }}
         onChange={handlePaginationChange}

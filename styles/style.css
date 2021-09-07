@@ -12,3 +12,7 @@
 .ant-table-cell {
   overflow-wrap: anywhere;
 }
+
+.ant-table-wrapper .ant-table-pagination-right {
+  margin-right: 10px;
+}
