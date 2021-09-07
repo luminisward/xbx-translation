@@ -162,7 +162,7 @@ export default function Editor() {
       <CompareTable
         dataSource={dataSource}
         columns={columns}
-        scroll={{ y: 'calc(100vh - 158px)' }}
+        scroll={{ y: 'calc(100vh - 160px)' }}
         currentTableName={currentTableName}
         className="h-full  overflow-auto"
         pagination={{

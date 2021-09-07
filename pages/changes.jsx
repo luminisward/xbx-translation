@@ -10,7 +10,7 @@ import AppLayout from '../components/AppLayout'
 
 const { Option } = Select
 
-export default function Editor() {
+export default function Changes() {
   const [currentTable, setCurrentTable] = useState('')
 
   const { data: changes, mutate } = useSWR(`/changes/${currentTable}`, request.get)
@@ -76,7 +76,7 @@ export default function Editor() {
       <Table
         dataSource={changesDataSource}
         columns={columns}
-        scroll={{ y: 'calc(100vh - 158px)' }}
+        scroll={{ y: 'calc(100vh - 160px)' }}
         className="h-full  overflow-auto"
         rowKey="id"
         bordered
