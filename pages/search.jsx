@@ -29,7 +29,7 @@ export default function Editor() {
     },
   ]
 
-  const [searchText, setSearchText] = useState('')
+  const [searchCondition, setSearchCondition] = useState({ searchText: '', language: 'cn' })
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -37,7 +37,9 @@ export default function Editor() {
   })
 
   const { data } = useSWR(
-    searchText ? [searchText, 'cn', pagination.current, pagination.pageSize] : null,
+    searchCondition.searchText
+      ? [searchCondition.searchText, searchCondition.language, pagination.current, pagination.pageSize]
+      : null,
     (text, language, page, limit) => request.get(`/search/bdat`, { params: { text, language, page, limit } }),
     { revalidateOnFocus: false }
   )
@@ -52,8 +54,9 @@ export default function Editor() {
     }
   }, [data])
 
+  const [language, setLanguage] = useState('cn')
   const handleSearchTextChange = async (text) => {
-    setSearchText(text)
+    setSearchCondition({ searchText: text, language })
   }
 
   const handlePaginationChange = async (pagination) => {
@@ -64,7 +67,14 @@ export default function Editor() {
     <AppLayout
       navbar={
         <>
-          <Input.Search placeholder="input search text" size="large" enterButton onSearch={handleSearchTextChange} />
+          <Input.Group compact style={{ display: 'flex' }}>
+            <Select size="large" value={language} onChange={setLanguage}>
+              <Option value="jp">日版</Option>
+              <Option value="yx">游侠</Option>
+              <Option value="cn">汉化</Option>
+            </Select>
+            <Input.Search placeholder="input search text" size="large" enterButton onSearch={handleSearchTextChange} />
+          </Input.Group>
         </>
       }
     >
@@ -76,8 +86,14 @@ export default function Editor() {
         rowKey={(record) => `${record.table}:${record.row_id}`}
         bordered
         size="small"
-        loading={searchText && !data}
-        pagination={{ ...pagination, total }}
+        loading={searchCondition.searchText && !data}
+        pagination={{
+          ...pagination,
+          total,
+          showSizeChanger: true,
+          pageSizeOptions: [10, 100, 1000, 5000],
+          showTotal: (total) => `Total ${total}`,
+        }}
         onChange={handlePaginationChange}
       />
     </AppLayout>
